@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Qatar';
+  src: url('Qatar2022Arabic-Bold.ttf');
+}
+
+body {
+    font-family: 'Qatar';
+    font-size: 100%;
+}
+
+.scoreline {
+    font-weight: 200;
+    font-size: 1em;
+    margin: 0;
+}
+
+.list-group-item {
+    background-color: #ccbbbb;
+}
+
+.crest {
+    width: 25px;
+    vertical-align: middle;
+}
