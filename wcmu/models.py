@@ -7,18 +7,19 @@ user = {
 "email": "ikehfranklind3c0d3r@gmail.com",
 "password": "wc4p1project2022",
 }
-login_response = requests.post("http://api.cup2022.ir/api/v1/user/login", json=user)
-print(login_response.text)
-token = login_response.json()["data"]["token"]
 
-header_2= {'Accept': 'application/json', 'Authorization': f'Bearer {token}'}
-api2 = 'http://api.cup2022.ir/api/v1/bydate'
-date = {"date":"11/22/2022"}
+#login_response = requests.post("http://api.cup2022.ir/api/v1/user/login", json=user)
+#print(login_response.text)
+#token = login_response.json()["data"]["token"]
+
+#header_2= {'Accept': 'application/json', 'Authorization': f'Bearer {token}'}
+#api2 = 'http://api.cup2022.ir/api/v1/bydate'
+#date = {"date":"11/22/2022"}
 
 response = requests.get(api1, headers=header_1)
-match_data = response.json()['matches']
-response2 = requests.post(api2, json=date, headers=header_2)
-print(response2)
+#response2 = requests.post(api2, json=date, headers=header_2)
+
+print(response)
 
 # required data
 # # Matches
@@ -40,10 +41,15 @@ class Match_Obj:
             self.group = match_dict['group']
         self.home = match_dict['homeTeam']
         self.away = match_dict['awayTeam']
+        self.ltu = match_dict['lastUpdated']
         if match_dict['score']['fullTime']['home'] != None:
             self.ft_score = match_dict['score']['fullTime']
         else:
             self.ft_score = {'home': '-', 'away':'-'}
 
-matches = [Match_Obj(m) for m in match_data]
+def refresh():
+    response = requests.get(api1, headers=header_1)
+    match_data = response.json()['matches']
+    print(response)
+    return [Match_Obj(m) for m in match_data]
     

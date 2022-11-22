@@ -10,6 +10,5 @@ def create_app(env):
         app.config.from_pyfile('config.py')
         
     from .routes import wcmu_app
-    app.register_blueprint(wcmu_app)
-        
+    app.register_blueprint(wcmu_app)    
     return app
