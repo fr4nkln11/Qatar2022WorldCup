@@ -1,4 +1,7 @@
 from flask import Flask
+from flask_socketio import SocketIO
+
+socketio = SocketIO()
 
 def create_app(env):
     if env == "Development":
@@ -9,7 +12,7 @@ def create_app(env):
         app = Flask(__name__)
         app.config.from_pyfile('config.py')
         
-    
+    socketio.init_app(app)
     with app.app_context():
         from .routes import wcmu_app
     
