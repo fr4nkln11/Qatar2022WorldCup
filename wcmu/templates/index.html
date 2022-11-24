@@ -17,8 +17,9 @@
     </head>
     <body>
         <div class="container">
-            <img class="mx-auto d-block" src="https://crests.football-data.org/qatar.png">
+            <img class="mx-auto logo d-block" src="https://crests.football-data.org/qatar.png">
             <h2 class="text-center my-3"> Today's Matches </h2>
+            <button type="button" id="Reload" class="btn btn-light">Reload</button>
             <ul class="list-group">
             {% for match in matches %}
             <li class="list-group-item">
@@ -29,7 +30,7 @@
                 <img class="mx-1 crest border-0" src="{{ match.home['crest'] }}">
                 <div class="scoreline border-0 row d-flex">
                     <span class="col border-0 text-start">{{ match.home['tla'] }}</span>
-                    <span class="col-3 border-0 text-center flex-grow-1">{{ match.ft_score['home'] }} : {{ match.ft_score['away'] }}</span>
+                    <span id="scoreline" class="col-3 border-0 text-center flex-grow-1">{{ match.ft_score['home'] }} : {{ match.ft_score['away'] }}</span>
                     <span class="col border-0 text-end">{{ match.away['tla'] }}</span>
                 </div>
                 <img class="mx-1 crest border-0" src="{{ match.away['crest'] }}">

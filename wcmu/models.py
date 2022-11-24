@@ -36,9 +36,14 @@ print(response)
 
 class Match_Obj:    
     def __init__(self, match_dict):
-        self.status = match_dict["status"]
+        if match_dict["status"] == 'IN_PLAY':
+            self.status = 'LIVE'
+        else:
+            self.status = match_dict["status"]
+        
         if match_dict['stage'] == 'GROUP_STAGE':
             self.group = match_dict['group']
+        
         self.home = match_dict['homeTeam']
         self.away = match_dict['awayTeam']
         self.ltu = match_dict['lastUpdated']
@@ -47,7 +52,7 @@ class Match_Obj:
         else:
             self.ft_score = {'home': '-', 'away':'-'}
 
-def refresh():
+def load():
     response = requests.get(api1, headers=header_1)
     match_data = response.json()['matches']
     print(response)
