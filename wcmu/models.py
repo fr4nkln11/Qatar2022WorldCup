@@ -1,11 +1,14 @@
+from flask import current_app
 import requests
 
+config = current_app.config
+
 api1 = 'https://api.football-data.org/v4/matches'
-header_1 = { 'X-Auth-Token': 'b3211cb5487941569bfb0401c4b15725' }
+header_1 = { 'X-Auth-Token': config["API_KEY"] }
 
 user = {
-"email": "ikehfranklind3c0d3r@gmail.com",
-"password": "wc4p1project2022",
+"email": config["EMAIL"],
+"password": config["PASSWORD"],
 }
 
 #login_response = requests.post("http://api.cup2022.ir/api/v1/user/login", json=user)

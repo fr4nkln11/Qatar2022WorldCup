@@ -16,8 +16,8 @@ def reload_scores():
     matches = load()
     if request.method == "GET":
         global count
-        payload = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in matches]
-        #payload = [{'home':count, 'away':count} for match in matches]
-        #count += 1
+        #payload = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in matches]
+        payload = [{'home':count, 'away':count} for match in matches]
+        count += 1
         print(payload)
         return jsonify(payload)

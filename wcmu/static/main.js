@@ -9,7 +9,7 @@ let auto_reload = async () => {
     for (let i = 0; i < scorelines.length; i++){
         scorelines[i].innerHTML = `${scores[i].home} : ${scores[i].away}`
     }
-    setTimeout(auto_reload, 1500);
+    setTimeout(auto_reload, 10000);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
