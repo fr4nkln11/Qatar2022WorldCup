@@ -6,24 +6,6 @@ config = current_app.config
 api1 = 'https://api.football-data.org/v4/matches'
 header_1 = { 'X-Auth-Token': config["API_KEY"] }
 
-user = {
-"email": config["EMAIL"],
-"password": config["PASSWORD"],
-}
-
-#login_response = requests.post("http://api.cup2022.ir/api/v1/user/login", json=user)
-#print(login_response.text)
-#token = login_response.json()["data"]["token"]
-
-#header_2= {'Accept': 'application/json', 'Authorization': f'Bearer {token}'}
-#api2 = 'http://api.cup2022.ir/api/v1/bydate'
-#date = {"date":"11/22/2022"}
-
-response = requests.get(api1, headers=header_1)
-#response2 = requests.post(api2, json=date, headers=header_2)
-
-print(response)
-
 # required data
 # # Matches
 # # # Match Date and Match Day

@@ -7,13 +7,14 @@ import requests
 
 thread = None
 thread_lock = Lock()
+matches = load()
 
 def background_thread():
     #Example of how to send server generated events to clients.
     count = 0
     while True:
         matches = load()
-        socketio.sleep(1.5)
+        socketio.sleep(10)
         count += 1
         payload = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in matches]
         #payload = [{'home':count, 'away':count} for match in matches]
@@ -24,13 +25,10 @@ def background_thread():
 wcmu_app = Blueprint("wcmu_app", __name__)
 @wcmu_app.route("/", methods=["GET", "POST"])
 def index():
-    print("refresh")
-    matches = load()
     return render_template("index.html", matches=matches)
         
 @socketio.on('connect')
 def connect():
-    global thread
     print('Client connected')
 
     global thread
