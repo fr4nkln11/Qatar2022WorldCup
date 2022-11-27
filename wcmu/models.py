@@ -12,7 +12,7 @@ flag_dict = requests.get("https://flagcdn.com/en/codes.json").json()
 swapped_flag_dict = {v: k for k, v in flag_dict.items()}
 
 getFlagUrl = lambda country: f"https://flagcdn.com/{swapped_flag_dict[country]}.svg"
-matchStatus = {"FINISHED":"FULL TIME", "PAUSED":"HALF TIME", "IN_PLAY":"LIVE", "TIMED":"SCHEDULED"}
+matchStatus = {"FINISHED":'FULL TIME', "PAUSED":'HALF TIME', "IN_PLAY":'LIVE', "TIMED":'SCHEDULED'}
 # required data
 # # Matches
 # # # Match Date and Match Day

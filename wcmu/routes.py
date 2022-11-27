@@ -16,16 +16,17 @@ def background_thread():
     #Example of how to send server generated events to clients.
     count = 0
     while True:
-        socketio.sleep(10)
         _matches = loadMatchData()
+        socketio.sleep(5)
         global matches
         matches = _matches
         count += 1
-        status = [match.status for match in _matches]
+        status = json.dumps([match.status for match in _matches])
         scores = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
-        #payload = [{'home':count, 'away':count} for match in matches]
-        socketio.emit('fresh_data', {'scores': json.dumps(scores), 'status': json.dumps(status)})
-        print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
+        #scores = [{'home':count, 'away':count} for match in matches]
+        if "LIVE" in status:
+            socketio.emit('fresh_data', {'scores': scores, 'status': status})
+            print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
 
 wcmu_app = Blueprint("wcmu_app", __name__)
 @wcmu_app.route("/", methods=["GET", "POST"])

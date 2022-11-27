@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var socket = io.connect();
     //receive details from server
     socket.on("fresh_data", function (msg) {
-        scores = JSON.parse(msg.scores)
-        status = JSON.parse(msg.status)
+        let scores = msg.scores
+        let status = JSON.parse(msg.status)
         let status_board = document.querySelectorAll("#match_status")
         let scorelines = document.querySelectorAll("#scoreline")
         for (let i = 0; i < scorelines.length; i++){
