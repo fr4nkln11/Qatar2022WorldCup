@@ -12,7 +12,7 @@ flag_dict = requests.get("https://flagcdn.com/en/codes.json").json()
 swapped_flag_dict = {v: k for k, v in flag_dict.items()}
 
 getFlagUrl = lambda country: f"https://flagcdn.com/{swapped_flag_dict[country]}.svg"
-
+matchStatus = {"FINISHED":"FULL TIME", "PAUSED":"HALF TIME", "IN_PLAY":"LIVE", "TIMED":"SCHEDULED"}
 # required data
 # # Matches
 # # # Match Date and Match Day
@@ -28,7 +28,7 @@ getFlagUrl = lambda country: f"https://flagcdn.com/{swapped_flag_dict[country]}.
 
 class Match:    
     def __init__(self, match_dict):
-        self.status = match_dict["status"]
+        self.status = matchStatus[match_dict["status"]]
         if match_dict['stage'] == 'GROUP_STAGE':
             self.group = match_dict['group']
         self.home = match_dict['homeTeam']
