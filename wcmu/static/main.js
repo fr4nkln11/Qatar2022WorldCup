@@ -7,5 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < scorelines.length; i++){
             scorelines[i].innerHTML = `${scores[i].home} : ${scores[i].away}`
         }
+        console.log("success");
     });
 });

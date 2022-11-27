@@ -1,19 +1,23 @@
 from flask import Flask, Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_socketio import emit
 from threading import Lock
-from .models import load
+from .models import loadMatchData, loadStandingsData
 from . import socketio
 import requests
 
 thread = None
 thread_lock = Lock()
-matches = load()
+matches = loadMatchData()
+standings = loadStandingsData()
+startTimes = [datetime.strptime(match.startTime, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc) for match in matches]
+
+print(startTimes)
 
 def background_thread():
     #Example of how to send server generated events to clients.
     count = 0
     while True:
-        matches = load()
+        matches = loadMatchData()
         socketio.sleep(10)
         count += 1
         payload = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in matches]
@@ -25,7 +29,7 @@ def background_thread():
 wcmu_app = Blueprint("wcmu_app", __name__)
 @wcmu_app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html", matches=matches)
+    return render_template("index.html", matches=matches, standings=standings)
         
 @socketio.on('connect')
 def connect():
