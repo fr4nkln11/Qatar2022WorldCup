@@ -19,6 +19,8 @@ body {
 }
 
 .crest {
-    width: 25px;
+    height: 21px;
+    width: 35px;
+    object-fit: cover;
     vertical-align: middle;
 }

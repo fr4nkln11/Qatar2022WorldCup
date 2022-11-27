@@ -7,20 +7,20 @@ import requests
 
 thread = None
 thread_lock = Lock()
-matches = loadMatchData()
+initial_load = loadMatchData()
+matches = initial_load
 standings = loadStandingsData()
-startTimes = [datetime.strptime(match.startTime, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc) for match in matches]
-
-print(startTimes)
 
 def background_thread():
     #Example of how to send server generated events to clients.
     count = 0
     while True:
-        matches = loadMatchData()
+        _matches = loadMatchData()
+        global matches
+        matches = _matches
         socketio.sleep(10)
         count += 1
-        payload = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in matches]
+        payload = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
         #payload = [{'home':count, 'away':count} for match in matches]
         socketio.emit('fresh_data', {'scores': payload})
         print(str(count) + " sent")

@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO
+from flask_moment import Moment
 
 socketio = SocketIO()
 
@@ -11,7 +12,8 @@ def create_app(env):
     elif env == "Production":
         app = Flask(__name__)
         app.config.from_pyfile('config.py')
-        
+    
+    moment = Moment(app)    
     socketio.init_app(app)
     with app.app_context():
         from .routes import wcmu_app
