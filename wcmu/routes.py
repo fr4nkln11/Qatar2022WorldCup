@@ -24,9 +24,8 @@ def background_thread():
         status = json.dumps([match.status for match in _matches])
         scores = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
         #scores = [{'home':count, 'away':count} for match in matches]
-        if "LIVE" in status:
-            socketio.emit('fresh_data', {'scores': scores, 'status': status})
-            print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
+        socketio.emit('fresh_data', {'scores': scores, 'status': status})
+        print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
 
 wcmu_app = Blueprint("wcmu_app", __name__)
 @wcmu_app.route("/", methods=["GET", "POST"])
