@@ -18,7 +18,7 @@ def background_thread():
     count = 0
     while True:
         _matches = loadMatchData()
-        socketio.sleep(5)
+        socketio.sleep(15)
         global matches
         matches = _matches
         count += 1
@@ -29,19 +29,27 @@ def background_thread():
         print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
 
 wcmu_app = Blueprint("wcmu_app", __name__)
-@wcmu_app.route("/", methods=["GET", "POST"])
+
+@wcmu_app.route("/")
 def index():
-    return render_template("index.html", matches=matches, standings=standings, fixtures=fixtures)
+    return render_template("index.html", matches=matches)
+
+@wcmu_app.route("/standings")
+def standings_route():
+    return render_template("standings.html", standings=standings)
+
+@wcmu_app.route("/fixtures")
+def fixtures_route():
+    return render_template("fixtures.html", fixtures=fixtures)
         
 @socketio.on('connect')
 def connect():
     print('\nClient connected\n')
     
-    if 2 == 2:
-        global thread
-        with thread_lock:
-            if thread is None:
-                thread = socketio.start_background_task(background_thread)
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socketio.start_background_task(background_thread)
 
 @socketio.on('disconnect')
 def disconnect():
