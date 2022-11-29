@@ -6,12 +6,16 @@ config = current_app.config
 
 matchDataUrl = 'https://api.football-data.org/v4/matches'
 standingsDataUrl = 'https://api.football-data.org/v4/competitions/WC/standings'
+fixturesUrl = "https://api.football-data.org/v4/competitions/WC/matches?season=2022"
 header = { 'X-Auth-Token': config["API_KEY"] }
 
 flag_dict = requests.get("https://flagcdn.com/en/codes.json").json()
 swapped_flag_dict = {v: k for k, v in flag_dict.items()}
 
-getFlagUrl = lambda country: f"https://flagcdn.com/{swapped_flag_dict[country]}.svg"
+def getFlagUrl(country):
+    if country != None:
+        return f"https://flagcdn.com/{swapped_flag_dict[country]}.svg"
+
 matchStatus = {"FINISHED":'FULL TIME', "PAUSED":'HALF TIME', "IN_PLAY":'LIVE', "TIMED":'SCHEDULED'}
 # required data
 # # Matches
@@ -29,10 +33,10 @@ matchStatus = {"FINISHED":'FULL TIME', "PAUSED":'HALF TIME', "IN_PLAY":'LIVE', "
 class Match:    
     def __init__(self, match_dict):
         self.status = matchStatus[match_dict["status"]]
-        if match_dict['stage'] == 'GROUP_STAGE':
-            self.group = match_dict['group']
+        self.group = match_dict['group']
         self.home = match_dict['homeTeam']
         self.away = match_dict['awayTeam']
+        #print(self.home, self.away)
         self.home_crest = getFlagUrl(self.home['name'])
         self.away_crest = getFlagUrl(self.away['name'])
         self.startTime = datetime.strptime(match_dict['utcDate'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
@@ -73,4 +77,9 @@ def loadStandingsData():
     standingsData = response.json()['standings']
     print("standings:", response)
     return [GroupStandings(group) for group in standingsData]
-    
+
+def loadFixturesData():
+    response = requests.get(fixturesUrl, headers=header)
+    fixturesData = response.json()['matches']
+    print("fixtures:", response)
+    return [Match(match) for match in fixturesData]

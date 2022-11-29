@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, url_for
 from flask_socketio import emit
 from threading import Lock
 import json
-from .models import loadMatchData, loadStandingsData
+from .models import loadMatchData, loadStandingsData, loadFixturesData
 from . import socketio
 import requests
 
@@ -11,6 +11,7 @@ thread_lock = Lock()
 initial_load = loadMatchData()
 matches = initial_load
 standings = loadStandingsData()
+fixtures = loadFixturesData()
 
 def background_thread():
     #Example of how to send server generated events to clients.
@@ -30,7 +31,7 @@ def background_thread():
 wcmu_app = Blueprint("wcmu_app", __name__)
 @wcmu_app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html", matches=matches, standings=standings)
+    return render_template("index.html", matches=matches, standings=standings, fixtures=fixtures)
         
 @socketio.on('connect')
 def connect():
