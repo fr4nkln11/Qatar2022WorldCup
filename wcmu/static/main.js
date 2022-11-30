@@ -15,3 +15,14 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("success");
     });
 });
+
+    window.addEventListener('load',() => {
+        mod = new bootstrap.Modal(document.querySelector("#splashModal"), {backdrop: false});
+        mod.show();
+        setTimeout(() => {           
+            document.querySelector(".splash").style.transform = "translate(0, -20%)";
+            document.querySelector(".splash").style.opacity = '0'
+            document.querySelector(".splash").addEventListener('transitionend', () => {mod.hide()});
+            document.querySelector(".container").style.display = 'block';
+        }, 3500);
+    });

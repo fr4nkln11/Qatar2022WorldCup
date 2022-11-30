@@ -1,40 +1,39 @@
 {% extends 'base.html' %}
-
 {% block content %}        
-     <h2 class="text-center my-3"> Group Standings</h2>
-            {% for group in standings %}
-            <div class="table-responsive mt-3">
-                <table class="table table-striped table-bordered">
-                    <span>Group {{group.groupname}}</span>
-                    <thead>
-                        <tr>
-                            <th scope="col">Team</th>
-                            <th scope="col">MP</th>
-                            <th scope="col">W</th>
-                            <th scope="col">D</th>
-                            <th scope="col">L</th>
-                            <th scope="col">GF</th>
-                            <th scope="col">GA</th>
-                            <th scope="col">GD</th>
-                            <th scope="col">Pts</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for row in group.table %}
-                        <tr>
-                            <th scope="row"><img class="mx-1 crest border" src="{{ row.crest }}"> {{ row.name }}</th>
-                            <td class="font-monospace">{{ row.mp }}</td>
-                            <td class="font-monospace">{{ row.w }}</td>
-                            <td class="font-monospace">{{ row.d }}</td>
-                            <td class="font-monospace">{{ row.l }}</td>
-                            <td class="font-monospace">{{ row.scored }}</td>
-                            <td class="font-monospace">{{ row.conceded }}</td>
-                            <td class="font-monospace">{{ row.gd }}</td>
-                            <td class="font-monospace">{{ row.pts }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+<h2 class="text-center my-3"> Group Standings</h2>
+{% for group in standings %}
+<div class="table-responsive mt-3">
+    <table class="table table-striped table-bordered">
+        <span>Group {{group.groupname}}</span>
+        <thead>
+            <tr>
+                <th scope="col">Team</th>
+                <th scope="col">MP</th>
+                <th scope="col">W</th>
+                <th scope="col">D</th>
+                <th scope="col">L</th>
+                <th scope="col">GF</th>
+                <th scope="col">GA</th>
+                <th scope="col">GD</th>
+                <th scope="col">Pts</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in group.table %}
+            <tr>
+                <th scope="row"><img class="mx-1 crest border" src="{{ row.crest }}"> {{ row.name }}</th>
+                <td class="font-monospace">{{ row.mp }}</td>
+                <td class="font-monospace">{{ row.w }}</td>
+                <td class="font-monospace">{{ row.d }}</td>
+                <td class="font-monospace">{{ row.l }}</td>
+                <td class="font-monospace">{{ row.scored }}</td>
+                <td class="font-monospace">{{ row.conceded }}</td>
+                <td class="font-monospace">{{ row.gd }}</td>
+                <td class="font-monospace">{{ row.pts }}</td>
+            </tr>
             {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
 {% endblock %}
