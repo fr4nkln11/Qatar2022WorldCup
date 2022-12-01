@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2 class="text-center my-3"> Fixtures </h2>
+
+<h2 class="text-center my-3"> {% block current_page %} Fixtures {% endblock %} </h2>
 <ul class="list-group">
     {% for match in fixtures %}
     <li class="list-group-item">

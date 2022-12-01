@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     socket.on("fresh_data", function (msg) {
         let scores = msg.scores
         let status = JSON.parse(msg.status)
-        let status_board = document.querySelectorAll("#match_status")
-        let scorelines = document.querySelectorAll("#scoreline")
+        let status_board = document.querySelectorAll("#current_match_status")
+        let scorelines = document.querySelectorAll("#current_scoreline")
         for (let i = 0; i < scorelines.length; i++){
             scorelines[i].innerHTML = `${scores[i].home} : ${scores[i].away}`
         }
@@ -24,5 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector(".splash").style.opacity = '0'
             document.querySelector(".splash").addEventListener('transitionend', () => {mod.hide()});
             document.querySelector(".container").style.display = 'block';
-        }, 3500);
+            document.querySelector(".navbar").style.display = 'block';
+        }, 2500);
     });

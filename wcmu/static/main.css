@@ -3,6 +3,10 @@
   src: url('Qatar2022Arabic-Bold.ttf');
 }
 
+.navbar {
+    display: None;
+}
+
 .container {
     display: None;
 }
