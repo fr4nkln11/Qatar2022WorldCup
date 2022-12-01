@@ -1,5 +1,6 @@
 from flask import current_app
 from datetime import datetime, timezone
+from random import randint
 import requests
 
 config = current_app.config
@@ -41,9 +42,11 @@ class Match:
         self.away_crest = getFlagUrl(self.away['name'])
         self.startTime = datetime.strptime(match_dict['utcDate'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
         if match_dict['score']['fullTime']['home'] != None:
-            self.ft_score = match_dict['score']['fullTime']
+            #self.ft_score = match_dict['score']['fullTime']
+            self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
         else:
-            self.ft_score = {"home":"-","away":"-"}
+            #self.ft_score = {"home":"-","away":"-"}
+            self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
 
 class TeamRow:
     def __init__(self, team_dict):
@@ -68,18 +71,27 @@ class GroupStandings:
 
 def loadMatchData():
     response = requests.get(matchDataUrl, headers=header)
-    matchData = response.json()['matches']
-    print("match:", response)
-    return [Match(match) for match in matchData]
+    try:
+        matchData = response.json()['matches']
+        print("match:", response)
+        return [Match(match) for match in matchData]
+    except KeyError:
+        print("\nerror retrieving match data, trying again\n")
 
 def loadStandingsData():
     response = requests.get(standingsDataUrl, headers=header)
-    standingsData = response.json()['standings']
-    print("standings:", response)
-    return [GroupStandings(group) for group in standingsData]
+    try:
+        standingsData = response.json()['standings']
+        print("standings:", response)
+        return [GroupStandings(group) for group in standingsData]
+    except KeyError:
+        print("\nerror retrieving standings data, trying again\n")
 
 def loadFixturesData():
     response = requests.get(fixturesUrl, headers=header)
-    fixturesData = response.json()['matches']
-    print("fixtures:", response)
-    return [Match(match) for match in fixturesData]
+    try:
+        fixturesData = response.json()['matches']
+        print("fixtures:", response)
+        return [Match(match) for match in fixturesData]
+    except KeyError:
+        print("\nerror retrieving fixtures data, trying again\n")

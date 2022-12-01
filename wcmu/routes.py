@@ -18,15 +18,16 @@ def background_thread():
     count = 0
     while True:
         _matches = loadMatchData()
-        socketio.sleep(15)
-        global matches
-        matches = _matches
-        count += 1
-        status = json.dumps([match.status for match in _matches])
-        scores = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
-        #scores = [{'home':count, 'away':count} for match in matches]
-        socketio.emit('fresh_data', {'scores': scores, 'status': status})
-        print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
+        if _matches:
+            socketio.sleep(1)
+            global matches
+            matches = _matches
+            count += 1
+            status = json.dumps([match.status for match in _matches])
+            scores = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
+            #scores = [{'home':count, 'away':count} for match in matches]
+            socketio.emit('live_data', {'scores': scores, 'status': status})
+            print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
 
 wcmu_app = Blueprint("wcmu_app", __name__)
 

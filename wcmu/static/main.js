@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     var socket = io.connect();
     //receive details from server
-    socket.on("fresh_data", function (msg) {
+    socket.on("live_data", function (msg) {
         let scores = msg.scores
         let status = JSON.parse(msg.status)
         let status_board = document.querySelectorAll("#current_match_status")
