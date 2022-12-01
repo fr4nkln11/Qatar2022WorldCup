@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, redirect, url_for
+from rich import print
 from flask_socketio import emit
 from threading import Lock
-import json
 from .models import loadMatchData, loadStandingsData, loadFixturesData
 from . import socketio
 import requests
@@ -19,15 +19,13 @@ def background_thread():
     while True:
         _matches = loadMatchData()
         if _matches:
-            socketio.sleep(1)
+            socketio.sleep(10)
             global matches
             matches = _matches
             count += 1
-            status = json.dumps([match.status for match in _matches])
-            scores = [{'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
-            #scores = [{'home':count, 'away':count} for match in matches]
-            socketio.emit('live_data', {'scores': scores, 'status': status})
-            print("\n" + str(count) + " sent\n" + str(scores) + "\n" + str(status) + "\n")
+            payload = [{"id":match.id, "status":match.status, 'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
+            socketio.emit('live_data', {"payload":payload})
+            print(payload)
 
 wcmu_app = Blueprint("wcmu_app", __name__)
 

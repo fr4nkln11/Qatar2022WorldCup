@@ -2,15 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var socket = io.connect();
     //receive details from server
     socket.on("live_data", function (msg) {
-        let scores = msg.scores
-        let status = JSON.parse(msg.status)
-        let status_board = document.querySelectorAll("#current_match_status")
-        let scorelines = document.querySelectorAll("#current_scoreline")
-        for (let i = 0; i < scorelines.length; i++){
-            scorelines[i].innerHTML = `${scores[i].home} : ${scores[i].away}`
-        }
-        for (let i = 0; i < status_board.length; i++){
-            status_board[i].innerHTML = status[i]
+        let match_data = msg.payload
+        for (let i = 0; i < match_data.length; i++){
+            document.querySelector(`.current_match[id='${match_data[i].id}'] #scoreline`).innerHTML = `${match_data[i].home} : ${match_data[i].away}`;
+            document.querySelector(`.current_match[id='${match_data[i].id}'] #status`).innerHTML = match_data[i].status;
         }
         console.log("success");
     });

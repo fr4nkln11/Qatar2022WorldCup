@@ -33,6 +33,7 @@ matchStatus = {"FINISHED":'FULL TIME', "PAUSED":'HALF TIME', "IN_PLAY":'LIVE', "
 
 class Match:    
     def __init__(self, match_dict):
+        self.id = match_dict['id']
         self.status = matchStatus[match_dict["status"]]
         self.group = match_dict['group']
         self.home = match_dict['homeTeam']
@@ -42,11 +43,11 @@ class Match:
         self.away_crest = getFlagUrl(self.away['name'])
         self.startTime = datetime.strptime(match_dict['utcDate'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
         if match_dict['score']['fullTime']['home'] != None:
-            #self.ft_score = match_dict['score']['fullTime']
-            self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
+            self.ft_score = match_dict['score']['fullTime']
+            #self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
         else:
-            #self.ft_score = {"home":"-","away":"-"}
-            self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
+            self.ft_score = {"home":"-","away":"-"}
+            
 
 class TeamRow:
     def __init__(self, team_dict):
