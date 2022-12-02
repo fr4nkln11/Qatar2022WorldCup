@@ -1,29 +1,11 @@
-{% extends 'base.html' %}
-{% block content %}
-
-<h2 class="text-center my-3"> {% block current_page %} Fixtures {% endblock %} </h2>
+<h2 class="text-center my-3"> Fixtures </h2>
 {% for date in fixtures["dates"] %}
 <h3 class="text-center my-3"> {{date}} </h2>
 <ul class="list-group">
     {% for match in fixtures["allMatches"] %}
     {% if match.dateStr == date %}
-    <li class="list-group-item">
-        <div class="mx-auto d-flex border-0 justify-content-between">
-            <h6 id="match_status" class="my-0 py-0 border-0">{{ match.status }}</h6>
-            <h6 class="my-0 py-0 border-0">{{ moment(match.date).format('h:mm A') }}</h6>
-        </div>
-        <div class="my-0 border-0 d-flex justify-content-between align-items-center">
-            <img class="mx-1 crest border-0" src="{{ match.home_crest }}">
-            <div class="scoreline border-0 row d-flex">
-                <span class="col border-0 text-start">{{ match.home['tla'] }}</span>
-                <span id="scoreline" class="col-3 border-0 text-center flex-grow-1">{{ match.ft_score['home'] }} : {{ match.ft_score['away'] }}</span>
-                <span class="col border-0 text-end">{{ match.away['tla'] }}</span>
-            </div>
-            <img class="mx-1 crest border-0" src="{{ match.away_crest }}">
-        </div>
-    </li>
+    {% include 'match_card.html' %}
     {% endif %}
     {% endfor %}
 </ul>
 {% endfor %}
-{% endblock %}

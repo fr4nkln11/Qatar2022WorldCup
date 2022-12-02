@@ -32,16 +32,8 @@ wcmu_app = Blueprint("wcmu_app", __name__)
 
 @wcmu_app.route("/")
 def index():
-    return render_template("index.html", matches=matches)
+    return render_template("index.html", matches=matches, standings=standings, fixtures=fixtures)
 
-@wcmu_app.route("/standings")
-def standings_route():
-    return render_template("standings.html", standings=standings)
-
-@wcmu_app.route("/fixtures")
-def fixtures_route():
-    return render_template("fixtures.html", fixtures=fixtures)
-        
 @socketio.on('connect')
 def connect():
     print('\nClient connected\n')

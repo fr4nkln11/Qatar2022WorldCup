@@ -1,0 +1,6 @@
+<h2 class="text-center my-3"> Today's Matches </h2>
+<ul class="list-group">
+    {% for match in matches %}
+    {% include 'match_card.html' %}
+    {% endfor %}
+</ul>
