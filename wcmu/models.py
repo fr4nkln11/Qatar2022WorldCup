@@ -18,30 +18,18 @@ def getFlagUrl(country):
         return f"https://flagcdn.com/{swapped_flag_dict[country]}.svg"
 
 matchStatus = {"FINISHED":'FULL TIME', "PAUSED":'HALF TIME', "IN_PLAY":'LIVE', "TIMED":'SCHEDULED'}
-# required data
-# # Matches
-# # # Match Date and Match Day
-# # # Status
-# # # Playing Teams (Home and Away)
-# # # # if stage = group_stage: Group else: round
-# # # # Team crest
-# # # # Short name
-# # # # Score
-# # # # Goal Scorer
-# # # Current Half
-# # # Referee
 
 class Match:    
     def __init__(self, match_dict):
         self.id = match_dict['id']
         self.status = matchStatus[match_dict["status"]]
-        self.group = match_dict['group']
+        self.group = match_dict["group"]
         self.home = match_dict['homeTeam']
         self.away = match_dict['awayTeam']
         #print(self.home, self.away)
         self.home_crest = getFlagUrl(self.home['name'])
         self.away_crest = getFlagUrl(self.away['name'])
-        self.startTime = datetime.strptime(match_dict['utcDate'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+        self.date = datetime.strptime(match_dict['utcDate'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
         if match_dict['score']['fullTime']['home'] != None:
             self.ft_score = match_dict['score']['fullTime']
             #self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
@@ -67,7 +55,7 @@ class TeamRow:
 
 class GroupStandings:
     def __init__(self, standings_dict):
-        self.groupname = str(standings_dict["group"])[-1]
+        self.name = str(standings_dict["group"])[-1]
         self.table = [TeamRow(row) for row in standings_dict["table"]]
 
 def loadMatchData():

@@ -25,7 +25,8 @@ def background_thread():
             count += 1
             payload = [{"id":match.id, "status":match.status, 'home':match.ft_score['home'], 'away':match.ft_score['away']} for match in _matches]
             socketio.emit('live_data', {"payload":payload})
-            print(payload)
+            print(f"sent {count}", payload)
+
 
 wcmu_app = Blueprint("wcmu_app", __name__)
 

@@ -7,7 +7,7 @@
     <li class="list-group-item">
         <div class="mx-auto d-flex border-0 justify-content-between">
             <h6 id="match_status" class="my-0 py-0 border-0">{{ match.status }}</h6>
-            <h6 class="my-0 py-0 border-0">{{ moment(match.startTime).format('h:mm A') }}</h6>
+            <h6 class="my-0 py-0 border-0">{{ moment(match.date).format('h:mm A') }}</h6>
         </div>
         <div class="my-0 border-0 d-flex justify-content-between align-items-center">
             <img class="mx-1 crest border-0" src="{{ match.home_crest }}">
