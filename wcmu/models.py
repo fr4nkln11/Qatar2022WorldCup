@@ -2,6 +2,7 @@ from flask import current_app
 from datetime import datetime, timezone
 from random import randint
 import requests
+from requests import ConnectTimeout, Timeout, ConnectionError
 
 config = current_app.config
 
@@ -59,28 +60,41 @@ class GroupStandings:
         self.table = [TeamRow(row) for row in standings_dict["table"]]
 
 def loadMatchData():
-    response = requests.get(matchDataUrl, headers=header)
     try:
-        matchData = response.json()['matches']
-        print("match:", response)
-        return [Match(match) for match in matchData]
-    except KeyError:
-        print("\nerror retrieving match data, trying again\n")
+        response = requests.get(matchDataUrl, headers=header)
+        try:
+            matchData = response.json()['matches']
+            print("match:", response)
+            return [Match(match) for match in matchData]
+        except KeyError:
+            print("\nerror retrieving match data, trying again\n")
+    except (ConnectTimeout, Timeout, ConnectionError) as e:
+        print("something went wrong")
+        print(f"[[{e}]]")
 
 def loadStandingsData():
-    response = requests.get(standingsDataUrl, headers=header)
     try:
-        standingsData = response.json()['standings']
-        print("standings:", response)
-        return [GroupStandings(group) for group in standingsData]
-    except KeyError:
-        print("\nerror retrieving standings data, trying again\n")
+        response = requests.get(standingsDataUrl, headers=header)
+        try:
+            standingsData = response.json()['standings']
+            print("standings:", response)
+            return [GroupStandings(group) for group in standingsData]
+        except KeyError:
+            print("\nerror retrieving standings data, trying again\n")
+    except (ConnectTimeout, Timeout, ConnectionError) as e:
+        print("something went wrong")
+        print(f"[[{e}]]")
 
 def loadFixturesData():
-    response = requests.get(fixturesUrl, headers=header)
     try:
-        fixturesData = response.json()['matches']
-        print("fixtures:", response)
-        return [Match(match) for match in fixturesData]
-    except KeyError:
-        print("\nerror retrieving fixtures data, trying again\n")
+        response = requests.get(fixturesUrl, headers=header)
+        try:
+            fixturesData = response.json()['matches']
+            print("fixtures:", response)
+            return [Match(match) for match in fixturesData]
+        except KeyError:
+            print("\nerror retrieving fixtures data, trying again\n")
+    except (ConnectTimeout, Timeout, ConnectionError) as e:
+        print("something went wrong")
+        print(f"[[{e}]]")
+        
