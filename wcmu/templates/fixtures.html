@@ -2,8 +2,11 @@
 {% block content %}
 
 <h2 class="text-center my-3"> {% block current_page %} Fixtures {% endblock %} </h2>
+{% for date in fixtures["dates"] %}
+<h3 class="text-center my-3"> {{date}} </h2>
 <ul class="list-group">
-    {% for match in fixtures %}
+    {% for match in fixtures["allMatches"] %}
+    {% if match.dateStr == date %}
     <li class="list-group-item">
         <div class="mx-auto d-flex border-0 justify-content-between">
             <h6 id="match_status" class="my-0 py-0 border-0">{{ match.status }}</h6>
@@ -19,6 +22,8 @@
             <img class="mx-1 crest border-0" src="{{ match.away_crest }}">
         </div>
     </li>
+    {% endif %}
     {% endfor %}
 </ul>
+{% endfor %}
 {% endblock %}

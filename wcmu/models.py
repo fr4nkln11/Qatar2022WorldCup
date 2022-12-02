@@ -24,13 +24,17 @@ class Match:
     def __init__(self, match_dict):
         self.id = match_dict['id']
         self.status = matchStatus[match_dict["status"]]
-        self.group = match_dict["group"]
+        if match_dict["stage"] == "GROUP_STAGE":
+            self.stage = match_dict["group"].replace("_"," ")
+        else:
+            self.stage = match_dict["stage"].replace("_"," ")
         self.home = match_dict['homeTeam']
         self.away = match_dict['awayTeam']
         #print(self.home, self.away)
         self.home_crest = getFlagUrl(self.home['name'])
         self.away_crest = getFlagUrl(self.away['name'])
         self.date = datetime.strptime(match_dict['utcDate'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+        self.dateStr = self.date.strftime("%B %d, %Y")
         if match_dict['score']['fullTime']['home'] != None:
             self.ft_score = match_dict['score']['fullTime']
             #self.ft_score = {"home":randint(0,9),"away":randint(0,9)}
@@ -91,7 +95,10 @@ def loadFixturesData():
         try:
             fixturesData = response.json()['matches']
             print("fixtures:", response)
-            return [Match(match) for match in fixturesData]
+            payload = { "allMatches":[Match(match) for match in fixturesData],
+                        "dates":list(dict.fromkeys([Match(match).date.strftime("%B %d, %Y") for match in fixturesData])),
+                        "stages":list(dict.fromkeys([Match(m).stage for m in fixturesData])) }
+            return payload
         except KeyError:
             print("\nerror retrieving fixtures data, trying again\n")
     except (ConnectTimeout, Timeout, ConnectionError) as e:
