@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, url_for
 from rich import print
 from flask_socketio import emit
 from threading import Lock
-from .models import loadToday, loadStandingsData, loadFixturesData
+from .models import loadToday, loadStandings, loadFixtures
 from . import socketio
 import requests
 
@@ -10,8 +10,8 @@ thread = None
 thread_lock = Lock()
 initial_load = loadToday()
 matches = initial_load
-standings = loadStandingsData()
-fixtures = loadFixturesData()
+standings = loadStandings()
+fixtures = loadFixtures()
 
 def background_thread():
     #Example of how to send server generated events to clients.

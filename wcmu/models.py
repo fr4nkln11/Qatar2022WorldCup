@@ -69,24 +69,23 @@ def loadToday():
     try:
         response = requests.get(fixturesUrl, headers=header)
         try:
-            matchData = [Match(match) for match in response.json()['matches']]
+            allMatches = [Match(match) for match in response.json()['matches']]
             print("match:", response)
             
             payload = []
-            for match in matchData:
+            for match in allMatches:
                 if today.strftime("%B %d, %Y") == match.dateStr:
                     payload.append(match)
             
             return payload
             
-        except KeyError as e:
+        except KeyError:
             print("\nerror retrieving match data, trying again\n")
-            print(e)
     except (ConnectTimeout, Timeout, ConnectionError) as e:
         print("something went wrong")
         print(f"[[{e}]]")
 
-def loadStandingsData():
+def loadStandings():
     try:
         response = requests.get(standingsDataUrl, headers=header)
         try:
@@ -99,7 +98,7 @@ def loadStandingsData():
         print("something went wrong")
         print(f"[[{e}]]")
 
-def loadFixturesData():
+def loadFixtures():
     try:
         response = requests.get(fixturesUrl, headers=header)
         try:
