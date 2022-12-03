@@ -17,8 +17,7 @@ def background_thread():
     #Example of how to send server generated events to clients.
     count = 0
     while True:
-        _matches = loadToday()
-        if _matches:
+        if _matches := loadToday():
             socketio.sleep(10)
             global matches
             matches = _matches
