@@ -71,14 +71,13 @@ def loadToday():
         try:
             allMatches = [Match(match) for match in response.json()['matches']]
             print("match:", response)
-            
-            payload = []
-            for match in allMatches:
-                if today.strftime("%B %d, %Y") == match.dateStr:
-                    payload.append(match)
-            
-            return payload
-            
+
+            return [
+                match
+                for match in allMatches
+                if today.strftime("%B %d, %Y") == match.dateStr
+            ]
+
         except KeyError:
             print("\nerror retrieving match data, trying again\n")
     except (ConnectTimeout, Timeout, ConnectionError) as e:
@@ -104,10 +103,21 @@ def loadFixtures():
         try:
             fixturesData = response.json()['matches']
             print("fixtures:", response)
-            payload = { "allMatches":[Match(match) for match in fixturesData],
-                        "dates":list(dict.fromkeys([Match(match).date.strftime("%B %d, %Y") for match in fixturesData])),
-                        "stages":list(dict.fromkeys([Match(m).stage for m in fixturesData])) }
-            return payload
+            return {
+                "allMatches": [Match(match) for match in fixturesData],
+                "dates": list(
+                    dict.fromkeys(
+                        [
+                            Match(match).date.strftime("%B %d, %Y")
+                            for match in fixturesData
+                        ]
+                    )
+                ),
+                "stages": list(
+                    dict.fromkeys([Match(m).stage for m in fixturesData])
+                ),
+            }
+
         except KeyError:
             print("\nerror retrieving fixtures data, trying again\n")
     except (ConnectTimeout, Timeout, ConnectionError) as e:
