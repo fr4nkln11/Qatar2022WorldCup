@@ -2,13 +2,13 @@ from flask import Flask, Blueprint, render_template, request, redirect, url_for
 from rich import print
 from flask_socketio import emit
 from threading import Lock
-from .models import loadMatchData, loadStandingsData, loadFixturesData
+from .models import loadToday, loadStandingsData, loadFixturesData
 from . import socketio
 import requests
 
 thread = None
 thread_lock = Lock()
-initial_load = loadMatchData()
+initial_load = loadToday()
 matches = initial_load
 standings = loadStandingsData()
 fixtures = loadFixturesData()
@@ -17,7 +17,7 @@ def background_thread():
     #Example of how to send server generated events to clients.
     count = 0
     while True:
-        _matches = loadMatchData()
+        _matches = loadToday()
         if _matches:
             socketio.sleep(10)
             global matches

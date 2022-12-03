@@ -1,12 +1,12 @@
 from flask import current_app
 from datetime import datetime, timezone
 from random import randint
+from rich import print
 import requests
 from requests import ConnectTimeout, Timeout, ConnectionError
 
 config = current_app.config
 
-matchDataUrl = 'https://api.football-data.org/v4/matches'
 standingsDataUrl = 'https://api.football-data.org/v4/competitions/WC/standings'
 fixturesUrl = "https://api.football-data.org/v4/competitions/WC/matches?season=2022"
 header = { 'X-Auth-Token': config["API_KEY"] }
@@ -63,15 +63,25 @@ class GroupStandings:
         self.name = str(standings_dict["group"])[-1]
         self.table = [TeamRow(row) for row in standings_dict["table"]]
 
-def loadMatchData():
+def loadToday():
+    today = datetime.utcnow().replace(tzinfo=timezone.utc)
+    print(today.strftime("%B %d, %Y"))
     try:
-        response = requests.get(matchDataUrl, headers=header)
+        response = requests.get(fixturesUrl, headers=header)
         try:
-            matchData = response.json()['matches']
+            matchData = [Match(match) for match in response.json()['matches']]
             print("match:", response)
-            return [Match(match) for match in matchData]
-        except KeyError:
+            
+            payload = []
+            for match in matchData:
+                if today.strftime("%B %d, %Y") == match.dateStr:
+                    payload.append(match)
+            
+            return payload
+            
+        except KeyError as e:
             print("\nerror retrieving match data, trying again\n")
+            print(e)
     except (ConnectTimeout, Timeout, ConnectionError) as e:
         print("something went wrong")
         print(f"[[{e}]]")
